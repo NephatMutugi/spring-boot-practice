@@ -1,10 +1,14 @@
 package com.kcbgroup.main.user;
 
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class User {
     private Integer id;
+    @Size(min = 3, message = "Name should have at least three characters", max = 30)
     private String name;
+    @Past
     private Date birthDate;
 
     public User(){
