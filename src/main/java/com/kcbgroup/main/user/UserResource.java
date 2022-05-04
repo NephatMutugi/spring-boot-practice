@@ -16,17 +16,21 @@ public class UserResource {
         this.service = service;
     }
 
-    @GetMapping(path = "/users/")
+    @GetMapping("/users/")
     public List<User> returnAllUsers(){
         return service.findAll();
     }
-    
-    @GetMapping("/users/{id}")
+
+    @GetMapping(value = "/users/{id}", consumes = "application/json")
     public User retrieveUser(@PathVariable int id) {
-    	return service.findOne(id);
+    	User user = service.findOne(id);
+        if (user == null){
+            throw new UserNotFoundException("id-" + id);
+        }
+        return user;
     }
 
-    @PostMapping("/users/")
+    @RequestMapping(value = "/users/", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Object> createUser(@RequestBody User user){
         User savedUser = service.saveUser(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
