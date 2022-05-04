@@ -1,7 +1,8 @@
 package com.kcbgroup.main.user;
 
+import org.springframework.hateoas.EntityModel;
+import  org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -24,12 +25,17 @@ public class UserController {
     }
 
     @GetMapping(value = "/users/{id}")
-    public User retrieveUser(@PathVariable int id) {
+    public EntityModel<User> retrieveUser(@PathVariable int id) {
     	User user = service.findOne(id);
-        if (user == null){
+        if (user == null)
             throw new UserNotFoundException("id-" + id);
-        }
-        return user;
+        EntityModel<User> entityModel = EntityModel.of(user);
+        WebMvcLinkBuilder linkToUser = WebMvcLinkBuilder
+                .linkTo(WebMvcLinkBuilder
+                        .methodOn(this.getClass())
+                        .returnAllUsers());
+        entityModel.add(linkToUser.withRel("all-users"));
+        return entityModel;
     }
 
     @RequestMapping(value = "/users/", method = RequestMethod.POST, consumes = "application/json")
@@ -50,6 +56,5 @@ public class UserController {
         }
 
     }
-
 
 }
