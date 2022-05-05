@@ -1,5 +1,7 @@
 package com.kcbgroup.main.helloworld;
 
+import java.util.Locale;
+
 import org.springframework.web.bind.annotation.*;
 
 //Controller
@@ -20,5 +22,10 @@ public class HelloWorldController {
 	@GetMapping(path = "hello-world/path-variable/{name}")
 	public HelloWorldBean helloWorldPath(@PathVariable String name){
 		return new HelloWorldBean(String.format("Hello Neph, %s", name));
+	}
+
+	@GetMapping(path = "hello-world-internationalized")
+	public String helloWorldInternationalized(@RequestHeader(name = "Accept-Language", required = false) Locale locale) {
+		return "Hello World";
 	}
 }
