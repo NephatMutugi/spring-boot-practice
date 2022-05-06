@@ -1,5 +1,9 @@
 package com.kcbgroup.main.filtering;
 
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
+import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -10,8 +14,21 @@ import java.util.List;
 public class FilteringController {
 
     @GetMapping("/filtering")
-    public List<SomeBean> retrieveSomeBean(){
-        return Arrays.asList(new SomeBean("Value 1", "Value 2", "Value 3"),
-                new SomeBean("Value 11", "Value 21", "Value 31"));
+    public MappingJacksonValue retrieveSomeBean(){
+        SomeBean someBean = new SomeBean("Value 1", "Value 2", "Value 3", " Value 4", "Value 5");
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
+                .filterOutAllExcept("field1", "field2");
+        FilterProvider filters = new SimpleFilterProvider()
+                .addFilter("SomeBeanFilter", filter);
+
+        MappingJacksonValue mapping = new MappingJacksonValue(someBean);
+        mapping.setFilters(filters);
+        return mapping;
+    }
+
+    @GetMapping("filtering-list")
+    public List<SomeBean> retrieveListOfSomeBean(){
+        return Arrays.asList(new SomeBean("Value 1", "Value 2", "Value 3", " Value 4", "Value 5"),
+                new SomeBean("Value 11", "Value 21", "Value 31", "Value 41", "value 51"));
     }
 }
