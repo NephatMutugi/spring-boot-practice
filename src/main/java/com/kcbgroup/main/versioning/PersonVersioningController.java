@@ -18,6 +18,7 @@ public class PersonVersioningController {
         return new PersonV2(new Name("Nephat" , "Mutugi", "Muchiri"));
     }
 
+    //URI Versioning
     @GetMapping(value = "/v1/param", params = "version=1")
     public PersonV1 paramV1(){
         return new PersonV1("Nephat Mutugi");
@@ -28,6 +29,7 @@ public class PersonVersioningController {
         return new PersonV2(new Name("Nephat" , "Mutugi", "Muchiri"));
     }
 
+    //Header Versioning
     @GetMapping(value = "/v1/param/header", headers = "API-VERSION=1")
     public PersonV1 headerV1(){
         return new PersonV1("Nephat Mutugi");
@@ -38,6 +40,7 @@ public class PersonVersioningController {
         return new PersonV2(new Name("Nephat" , "Mutugi", "Muchiri"));
     }
 
+    // Accept Header Versioning / MIME TYPE Versioning
     @GetMapping(value = "/v1/param/produces",
             produces = "application/vnd.company.app-v1+json")
     public PersonV1 producesV1(){
