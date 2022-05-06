@@ -68,6 +68,12 @@
 			<artifactId>spring-data-rest-hal-explorer</artifactId>
 		</dependency>
 
+		<!-- Spring boot Security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+
 		<!-- Internationalization -i18n -->
 
 		<dependency>
