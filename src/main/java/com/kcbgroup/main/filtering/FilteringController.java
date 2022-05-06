@@ -31,14 +31,12 @@ public class FilteringController {
         mapping.setFilters(filterValues("field1", "field2"));
 
         return mapping;
-
     }
 
     public FilterProvider filterValues(String field1, String field2){
         SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter
                 .filterOutAllExcept(field1, field2);
-        FilterProvider filters = new SimpleFilterProvider()
+        return new SimpleFilterProvider()
                 .addFilter("SomeBeanFilter", filter);
-        return filters;
     }
 }
