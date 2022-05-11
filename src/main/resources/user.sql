@@ -6,9 +6,12 @@ CREATE TABLE "user" (
 ) ;
 
 INSERT INTO "user" (id, birth_date, name)
-VALUES ( 1, '30/09/1998' , 'Nephat Mutugi'),
-       ( 2, '12/05/1998' , 'Mercy Chero'),
-       ( 3, '19/05/2018' , 'Leon Vitonya'),
-       ( 3, '19/05/2012' , 'Jayden'),
-       ( 3, '19/05/2001' , 'Maureen')
+VALUES ( 1, sysdate , 'Nephat Mutugi'),
+       ( 2, sysdate , 'Mercy Chero'),
+       ( 3, sysdate , 'Leon Vitonya'),
+       ( 4, sysdate , 'Jayden'),
+       ( 5, sysdate , 'Maureen');
+
+SELECT * FROM "user";
+
 
