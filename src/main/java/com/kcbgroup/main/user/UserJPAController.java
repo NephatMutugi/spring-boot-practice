@@ -10,21 +10,20 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 public class UserJPAController {
 
-    private  UserDaoService service;
-
-
-    private  UserRepository userRepository;
-
+    private final UserDaoService service;
+    private final UserRepository userRepository;
 
     public UserJPAController(UserDaoService service, UserRepository userRepository) {
         this.service = service;
         this.userRepository = userRepository;
     }
-
 
     @GetMapping("/jpa/users/")
     public List<User> returnAllUsers(){
@@ -32,13 +31,13 @@ public class UserJPAController {
     }
     @GetMapping(value = "/jpa/users/{id}")
     public EntityModel<User> retrieveUser(@PathVariable int id) {
-        User user = service.findOne(id);
-        if (user == null)
+        Optional<User> user = userRepository.findById(id);
+        if (!user.isPresent())
             throw new UserNotFoundException("id-" + id);
-        EntityModel<User> entityModel = EntityModel.of(user);
+
+        EntityModel<User> entityModel = EntityModel.of(user.get());
         WebMvcLinkBuilder linkToUser = WebMvcLinkBuilder
-                .linkTo(WebMvcLinkBuilder
-                        .methodOn(this.getClass())
+                .linkTo(methodOn(this.getClass())
                         .returnAllUsers());
         entityModel.add(linkToUser.withRel("all-users"));
         return entityModel;
