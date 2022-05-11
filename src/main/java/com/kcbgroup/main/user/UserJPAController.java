@@ -17,11 +17,11 @@ public class UserJPAController {
         this.service = service;
     }
 
-    @GetMapping("/users/")
+    @GetMapping("/jpa/users/")
     public List<User> returnAllUsers(){
         return service.findAll();
     }
-    @GetMapping(value = "/users/{id}")
+    @GetMapping(value = "/jpa/users/{id}")
     public EntityModel<User> retrieveUser(@PathVariable int id) {
     	User user = service.findOne(id);
         if (user == null)
@@ -35,7 +35,7 @@ public class UserJPAController {
         return entityModel;
     }
 
-    @RequestMapping(value = "/users/", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(value = "/jpa/users/", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user){
         User savedUser = service.saveUser(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -45,7 +45,7 @@ public class UserJPAController {
         return ResponseEntity.created(location).build();
     }
 
-    @DeleteMapping("/users/delete/{id}")
+    @DeleteMapping("/jpa/users/delete/{id}")
     public void deleteUser(@PathVariable int id){
         User user = service.deleteById(id);
         if (user == null){
