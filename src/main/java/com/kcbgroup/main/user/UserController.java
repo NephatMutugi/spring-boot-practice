@@ -12,9 +12,7 @@ import java.util.List;
 
 @RestController
 public class UserController {
-
     private final UserDaoService service;
-
     public UserController(UserDaoService service) {
         this.service = service;
     }
@@ -23,7 +21,6 @@ public class UserController {
     public List<User> returnAllUsers(){
         return service.findAll();
     }
-
     @GetMapping(value = "/users/{id}")
     public EntityModel<User> retrieveUser(@PathVariable int id) {
     	User user = service.findOne(id);
