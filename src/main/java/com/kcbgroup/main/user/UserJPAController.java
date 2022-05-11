@@ -1,5 +1,6 @@
 package com.kcbgroup.main.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -12,18 +13,26 @@ import java.util.List;
 
 @RestController
 public class UserJPAController {
-    private final UserDaoService service;
-    public UserJPAController(UserDaoService service) {
+
+    private  UserDaoService service;
+
+
+    private  UserRepository userRepository;
+
+
+    public UserJPAController(UserDaoService service, UserRepository userRepository) {
         this.service = service;
+        this.userRepository = userRepository;
     }
+
 
     @GetMapping("/jpa/users/")
     public List<User> returnAllUsers(){
-        return service.findAll();
+        return userRepository.findAll();
     }
     @GetMapping(value = "/jpa/users/{id}")
     public EntityModel<User> retrieveUser(@PathVariable int id) {
-    	User user = service.findOne(id);
+        User user = service.findOne(id);
         if (user == null)
             throw new UserNotFoundException("id-" + id);
         EntityModel<User> entityModel = EntityModel.of(user);

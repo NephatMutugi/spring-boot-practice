@@ -15,3 +15,4 @@ VALUES ( 1, sysdate , 'Nephat Mutugi'),
 SELECT * FROM "user";
 
 
+
