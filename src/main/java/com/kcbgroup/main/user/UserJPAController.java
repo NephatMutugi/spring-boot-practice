@@ -1,6 +1,6 @@
 package com.kcbgroup.main.user;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kcbgroup.main.posts.Post;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +17,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 public class UserJPAController {
 
-    private final UserDaoService service;
+    // private final UserDaoService service;
     private final UserRepository userRepository;
 
-    public UserJPAController(UserDaoService service, UserRepository userRepository) {
-        this.service = service;
+    public UserJPAController(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
@@ -43,23 +42,33 @@ public class UserJPAController {
         return entityModel;
     }
 
-    @RequestMapping(value = "/jpa/users/", method = RequestMethod.POST, consumes = "application/json")
+    @PostMapping(value = "/jpa/users/", consumes = "application/json")
     public ResponseEntity<Object> createUser(@Valid @RequestBody User user){
-        User savedUser = service.saveUser(user);
+        User savedUser = userRepository.save(user);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(savedUser.getId())
                 .toUri();
+        System.out.println("Created Successfully ");
         return ResponseEntity.created(location).build();
     }
 
     @DeleteMapping("/jpa/users/delete/{id}")
-    public void deleteUser(@PathVariable int id){
-        User user = service.deleteById(id);
-        if (user == null){
+    public String deleteUser(@PathVariable int id){
+        userRepository.deleteById(id);
+        return "Deleted Successfully";
+    }
+
+
+    // Get a specific user's posts
+    @GetMapping("/jpa/users/{id}/posts")
+    public List<Post> returnUserPosts(@PathVariable int id){
+        Optional<User> userOptional = userRepository.findById(id);
+        if (!userOptional.isPresent()){
             throw new UserNotFoundException("id-" + id);
         }
 
+        return userOptional.get().getPosts();
     }
 
 }
