@@ -10,6 +10,8 @@ import java.util.List;
 
 @Entity
 public class User {
+
+
     @Id
     @GeneratedValue
     private Integer id;
