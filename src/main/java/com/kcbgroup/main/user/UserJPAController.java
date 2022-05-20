@@ -1,6 +1,7 @@
 package com.kcbgroup.main.user;
 
 import com.kcbgroup.main.posts.Post;
+import com.kcbgroup.main.posts.PostsRepository;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +20,11 @@ public class UserJPAController {
 
     // private final UserDaoService service;
     private final UserRepository userRepository;
+    private final PostsRepository postsRepository;
 
-    public UserJPAController(UserRepository userRepository) {
+    public UserJPAController(UserRepository userRepository, PostsRepository postsRepository) {
         this.userRepository = userRepository;
+        this.postsRepository = postsRepository;
     }
 
     @GetMapping("/jpa/users/")
@@ -69,6 +72,33 @@ public class UserJPAController {
         }
 
         return userOptional.get().getPosts();
+    }
+
+    // Create posts for a specific user
+    // Use Optional<User> to return if user has an id or not
+    @PostMapping(value = "jpa/users/{id}/posts", consumes = "application/json")
+    public ResponseEntity<Object> createPost (@PathVariable int id, @Valid @RequestBody Post post){
+        // Retrieve the user making the post:
+        Optional<User> userOptional = userRepository.findById(id);
+        URI location;
+
+        // If the id is of a user, do...
+        if (userOptional.isPresent()){
+            User user = userOptional.get(); // Gets current user
+            post.setUser(user); // Sets the User variable in Post as the user with this id
+            Post savedPost = postsRepository.save(post); // Saves a post
+            location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("{id}")
+                    .buildAndExpand(savedPost.getId())
+                    .toUri();
+
+            System.out.println("Post Created");
+        } else {
+            throw new UserNotFoundException("id -> " + id + " not found");
+        }
+
+        return ResponseEntity.created(location).build();
     }
 
 }
