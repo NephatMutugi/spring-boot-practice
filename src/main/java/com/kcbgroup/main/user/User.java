@@ -9,15 +9,19 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table
 public class User {
 
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(insertable = false)
     private Integer id;
     @Size(min = 3, message = "Name should have at least three characters", max = 30)
+    @Column
     private String name;
     @Past
+    @Column
     private Date birthDate;
 
     @OneToMany(mappedBy = "user")

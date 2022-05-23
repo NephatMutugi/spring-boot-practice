@@ -6,12 +6,16 @@ import com.kcbgroup.main.user.User;
 import javax.persistence.*;
 
 @Entity
+@Table
 public class Post {
 
     @Id
     @GeneratedValue
+    @Column(insertable = false)
     private Integer id;
+    @Column
     private String title;
+   @Column
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
