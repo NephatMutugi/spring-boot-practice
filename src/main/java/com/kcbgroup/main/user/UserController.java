@@ -1,5 +1,6 @@
 package com.kcbgroup.main.user;
 
+import com.kcbgroup.main.exceptions.UserNotFoundException;
 import org.springframework.hateoas.EntityModel;
 import  org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;

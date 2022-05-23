@@ -1,5 +1,6 @@
 package com.kcbgroup.main.user;
 
+import com.kcbgroup.main.exceptions.UserNotFoundException;
 import com.kcbgroup.main.posts.Post;
 import com.kcbgroup.main.posts.PostsRepository;
 import org.springframework.hateoas.EntityModel;

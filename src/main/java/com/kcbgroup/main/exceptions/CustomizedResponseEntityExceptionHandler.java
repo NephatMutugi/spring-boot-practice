@@ -1,6 +1,5 @@
 package com.kcbgroup.main.exceptions;
 
-import com.kcbgroup.main.user.UserNotFoundException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
