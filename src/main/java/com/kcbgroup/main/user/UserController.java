@@ -22,11 +22,14 @@ public class UserController {
     public List<User> returnAllUsers(){
         return service.findAll();
     }
-    @GetMapping(value = "/users/{id}")
-    public EntityModel<User> retrieveUser(@PathVariable int id) {
-    	User user = service.findOne(id);
+
+
+    // Get user by name
+    @GetMapping(value = "/users/{name}")
+    public EntityModel<User> retrieveUser(@PathVariable String name) {
+    	User user = service.findOne(name);
         if (user == null)
-            throw new UserNotFoundException("id-" + id);
+            throw new UserNotFoundException("name->" + name);
         EntityModel<User> entityModel = EntityModel.of(user);
         WebMvcLinkBuilder linkToUser = WebMvcLinkBuilder
                 .linkTo(WebMvcLinkBuilder

@@ -60,6 +60,7 @@ public class UserJPAController {
     @DeleteMapping("/jpa/users/delete/{id}")
     public String deleteUser(@PathVariable int id){
         userRepository.deleteById(id);
+        
         return "Deleted Successfully";
     }
 

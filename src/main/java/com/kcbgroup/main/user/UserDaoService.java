@@ -1,10 +1,8 @@
 package com.kcbgroup.main.user;
 
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
+
+import java.util.*;
 
 @Component
 public class UserDaoService {
@@ -31,9 +29,9 @@ public class UserDaoService {
         return user;
     }
 
-    public User findOne(int id){
+    public User findOne(String name){
         for (User user : userList){
-            if (user.getId() == id){
+            if (Objects.equals(user.getName(), name)){
                 return user;
             }
         }
