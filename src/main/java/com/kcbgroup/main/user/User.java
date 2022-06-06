@@ -12,7 +12,6 @@ import java.util.List;
 @Table
 public class User {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(insertable = false)
